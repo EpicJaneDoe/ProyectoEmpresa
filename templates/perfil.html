@@ -20,17 +20,24 @@
 </head>
 <body>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for category, msg in messages %}
+                <div class="alert alert-info">{{ msg }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 col-lg-2 sidebar p-3 d-none d-md-block">
             <h4 class="text-center mb-4">EcuaCorp <span class="text-info">Z</span></h4>
             <nav class="nav flex-column gap-2">
                 <a class="nav-link active" href="#"><i class="bi bi-person-circle me-2"></i> Mi Perfil</a>
-                <a class="nav-link" href="#"><i class="bi bi-wallet2 me-2"></i> Mis Roles</a>
-                <a class="nav-link" href="#"><i class="bi bi-megaphone me-2"></i> Noticias</a>
-                <a class="nav-link" href="#"><i class="bi bi-calendar-event me-2"></i> Vacaciones</a>
                 <hr>
-                <a class="nav-link text-danger" href="/logout"><i class="bi bi-box-arrow-left me-2"></i> Salir</a>
+                <a class="nav-link text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-left me-2"></i> Salir</a>
             </nav>
         </div>
 
@@ -62,7 +69,7 @@
                     <div class="card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4>Detalle de Rol Mensual</h4>
-                            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-download me-1"></i> PDF</button>
+                            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('download_pdf') }}"><i class="bi bi-download me-1"></i> PDF</a>
                         </div>
                         
                         <div class="row g-3 mb-4">
@@ -79,6 +86,14 @@
                                 </div>
                             </div>
                         </div>
+                        {% if pay_date %}
+                        <div class="mb-4">
+                            <div class="alert alert-info py-2">
+                                <i class="bi bi-calendar2-event me-1"></i>
+                                <strong>Fecha estimada de pago:</strong> {{ pay_date }}
+                            </div>
+                        </div>
+                        {% endif %}
 
                         <table class="table table-hover">
                             <thead class="table-light">
